@@ -2,35 +2,51 @@
   <div class="container">
     <DatePicker v-model="date"/>
     <input
+      class="input"
       placeholder="0.00"
       max="0"
       type="number"
       step=".01"
       v-model="value">
-    <select v-model="category" v-if="type === 'expense'">
-      <option
-        v-for="(category, id) in Object.keys(expensesCategories)"
-        :key="id"
-        :value="category">
-        {{ category }}
-      </option>
-    </select>
-    <select v-if="type === 'expense'" v-model="subcategory">
-      <option v-for="(subcategory, id) in this.expensesCategories[this.category]"
-              :key="id"
-              :value="subcategory"
-      >{{subcategory}}
-      </option>
-    </select>
-    <select  v-model="category" v-else>
-      <option
-        v-for="(category, id) in incomesCategories"
-        :key="id"
-        :value="category">
-        {{ category }}
-      </option>
-    </select>
-    <button @click="submit()" :disabled='!date || !value || !category'>Add income</button>
+    <div class="select">
+      <select v-model="category" v-if="type === 'expense'">
+        <option value=null>Select category</option>
+        <option
+          v-for="(category, id) in Object.keys(expensesCategories)"
+          :key="id"
+          :value="category">
+          {{ category }}
+        </option>
+      </select>
+    </div>
+    <div class="select" v-if="type === 'expense'">
+      <select v-model="subcategory">
+        <option value=null>Select subcategory</option>
+        <option v-for="(subcategory, id) in this.expensesCategories[this.category]"
+                :key="id"
+                :value="subcategory"
+        >{{subcategory}}
+        </option>
+      </select>
+    </div>
+    <div class="select" v-else>
+      <select v-model="category" >
+        <option value=null>Select category</option>
+        <option
+          v-for="(category, id) in incomesCategories"
+          :key="id"
+          :value="category">
+          {{ category }}
+        </option>
+      </select>
+    </div>
+    <input
+      class="input"
+      type="text"
+      placeholder="Description" v-model="description">
+    <button
+      class="button"
+      @click="submit()" :disabled='!date || !value || !category'>Add</button>
   </div>
 </template>
 
@@ -69,6 +85,8 @@ export default {
     },
     getIncomeData() {
       return {
+        id: Math.random().toString(36).substr(2, 9),
+        type: this.type,
         date: this.date,
         value: this.value,
         category: this.category,
@@ -76,6 +94,8 @@ export default {
     },
     getExpenseData() {
       return {
+        id: Math.random().toString(36).substr(2, 9),
+        type: this.type,
         date: this.date,
         value: this.value,
         category: this.category,
@@ -101,8 +121,5 @@ export default {
 </script>
 
 <style>
-  .container {
-    display: flex;
-    flex-direction: column;
-  }
+
 </style>

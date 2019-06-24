@@ -30,6 +30,7 @@ export default new Vuex.Store({
     expensesCategories: state => state.expensesCategories,
     incomesCategories: state => state.incomesCategories,
     incomes: state => state.incomes,
+    expenses: state => state.expenses,
     userBalance: state => state.userBalance,
   },
   mutations: {
