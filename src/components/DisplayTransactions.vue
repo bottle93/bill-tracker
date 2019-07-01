@@ -3,21 +3,21 @@
     <div class="filters columns is-multiline is-centered" >
       <button
         class="button column is-one-quarter"
-        @click="() => this.filter = null">All</button>
+        @click="filter = null">All</button>
       <button
         class="button column is-one-quarter"
-        @click="() => this.filter = 'income'">Incomes</button>
+        @click="filter = 'income'">Incomes</button>
       <button
         class="button column is-one-quarter"
-        @click="() => this.filter = 'expense'">Expenses</button>
+        @click="filter = 'expense'">Expenses</button>
       <div
         class="button column is-one-quarter"
-        @click="() => this.filter = 'date'">Date from</div>
-      <div v-if="this.filter === 'date'">
+        @click="filter = 'date'">Date from</div>
+      <div v-if="filter === 'date'">
         <DatePicker v-model="dateFrom"/>
       </div>
     </div>
-      <FullTransaction
+      <Transaction
         v-for="obj in filteredTransactions" :data="obj"
         :key="obj.id"
       />
@@ -25,12 +25,14 @@
 </template>
 
 <script>
+
 import { mapGetters } from 'vuex';
 import DatePicker from 'vuejs-datepicker';
-import FullTransaction from './FullTransaction.vue';
+import Transaction from './Transaction.vue';
+
 
 export default {
-  components: { FullTransaction, DatePicker },
+  components: { Transaction, DatePicker },
   data() {
     return {
       dateFrom: null,
@@ -48,16 +50,15 @@ export default {
         transactions = this.incomes;
       } else if (this.filter === 'expense') {
         transactions = this.expenses;
-      } else if (this.date && this.dateFrom) {
+      } else if (this.dateFrom !== null && this.filter === 'date') {
         transactions = this.incomes.concat(this.expenses);
-        transactions.filter((item) => {
+        transactions = transactions.filter((item) => {
           const itemTime = new Date(item.date).getTime();
           return itemTime >= new Date(this.dateFrom).getTime();
         });
       } else {
         transactions = this.incomes.concat(this.expenses);
       }
-      console.log(transactions)
       return transactions.sort(this.sortFunction);
     },
   },

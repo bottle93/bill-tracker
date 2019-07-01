@@ -1,23 +1,22 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import SummaryView from './views/SummaryView.vue';
+import ChartsView from './views/ChartsView.vue';
 
 Vue.use(Router);
 
 export default new Router({
+  mode: 'history',
+  hash: false,
   routes: [
     {
-      path: '/',
-      name: 'SummaryView',
+      path: '/summary',
       component: SummaryView,
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
+      path: '/charts',
+      component: ChartsView,
     },
+    { path: '*', redirect: '/summary' },
   ],
 });

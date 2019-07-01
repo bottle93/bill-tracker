@@ -1,8 +1,7 @@
 <template>
   <nav class="navbar__main">
-    <router-link class="navbar__link" to="/#">Summary</router-link>
-    <router-link class="navbar__link" to="/about">Transactions</router-link>
-    <router-link class="navbar__link" to="">Categories</router-link>
+    <router-link class="navbar__link" to="/summary">Summary</router-link>
+    <router-link class="navbar__link" to="/charts">Charts</router-link>
   </nav>
 </template>
 

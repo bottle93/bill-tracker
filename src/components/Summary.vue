@@ -1,23 +1,22 @@
 <template>
-  <div class="container">
-    <div class="title is-centered">user balance: {{this.userBalance}}</div>
+  <div class='container'>
+    <div class='title is-centered'>user balance: {{this.userBalance}}</div>
     <DisplayTransactions/>
     <button
-      class="button"
-      @click="() => this.addTransaction = !this.addTransaction"
-      v-if="addTransaction === false">Add new</button>
-    <div class="typeSelection" v-else>
+      class='button'
+      @click='addTransaction = !addTransaction'
+      v-if='addTransaction === false'>Add new</button>
+    <div class='typeSelection' v-else>
       <button
-        class="button"
-        :disabled="this.addExpense" @click="toggleExpense">Expense</button>
+        class='button'
+        :disabled='this.addExpense' @click='toggleExpense'>Expense</button>
       <button
-        class="button"
-        :disabled="this.addIncome" @click="toggleExpense">Income</button>
+        class='button'
+        :disabled='this.addIncome' @click='toggleExpense'>Income</button>
       <button
-        class="button"
-        @click="() => this.addTransaction = !this.addTransaction">Cancel</button>
-      <AddTransaction :type="type"/>
-
+        class='button'
+        @click='addTransaction = !addTransaction'>Cancel</button>
+      <AddTransaction :type='type'/>
     </div>
   </div>
 </template>
@@ -35,11 +34,11 @@ export default {
       type: 'income',
       addExpense: false,
       addIncome: true,
+
     };
   },
   computed: {
     ...mapGetters(['incomes', 'userBalance', 'expenses']),
-
   },
   methods: {
     toggleExpense() {
