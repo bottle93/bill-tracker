@@ -1,22 +1,17 @@
 <template>
   <div class='container'>
-    <div class='title is-centered'>user balance: {{this.userBalance}}</div>
     <DisplayTransactions/>
-    <button
-      class='button'
-      @click='addTransaction = !addTransaction'
-      v-if='addTransaction === false'>Add new</button>
-    <div class='typeSelection' v-else>
-      <button
-        class='button'
-        :disabled='this.addExpense' @click='toggleExpense'>Expense</button>
-      <button
-        class='button'
-        :disabled='this.addIncome' @click='toggleExpense'>Income</button>
-      <button
-        class='button'
-        @click='addTransaction = !addTransaction'>Cancel</button>
-      <AddTransaction :type='type'/>
+    <div>user balance: {{this.userBalance}}</div>
+    <div class="section">
+      <div class='typeSelection' v-if='openModal === false'>
+        <button
+          class='button'
+          :disabled='this.addExpense' @click='toggleExpense'>Add Expense</button>
+        <button
+          class='button'
+          :disabled='this.addIncome' @click='toggleExpense'>Add Income</button>
+      </div>
+      <AddTransaction :type='type' :toggleModal="toggleModal" :isOpen="openModal"/>
     </div>
   </div>
 </template>
@@ -30,7 +25,7 @@ export default {
   components: { AddTransaction, DisplayTransactions },
   data() {
     return {
-      addTransaction: false,
+      openModal: false,
       type: 'income',
       addExpense: false,
       addIncome: true,
@@ -45,6 +40,10 @@ export default {
       this.addIncome = !this.addIncome;
       this.addExpense = !this.addExpense;
       this.addExpense ? this.type = 'expense' : this.type = 'income';
+      this.toggleModal();
+    },
+    toggleModal() {
+      this.openModal = !this.openModal;
     },
   },
 };

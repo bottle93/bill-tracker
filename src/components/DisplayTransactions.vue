@@ -1,26 +1,37 @@
 <template>
-  <div  class="container">
-    <div class="filters columns is-multiline is-centered" >
+  <div  class="section">
+    <div class="field is-grouped buttons" >
       <button
-        class="button column is-one-quarter"
+        class="button"
         @click="filter = null">All</button>
       <button
-        class="button column is-one-quarter"
+        class="button"
         @click="filter = 'income'">Incomes</button>
       <button
-        class="button column is-one-quarter"
+        class="button"
         @click="filter = 'expense'">Expenses</button>
       <div
-        class="button column is-one-quarter"
+        class="button"
         @click="filter = 'date'">Date from</div>
-      <div v-if="filter === 'date'">
+      <div class="datepicker_container" v-if="filter === 'date'">
         <DatePicker v-model="dateFrom"/>
       </div>
     </div>
+    <table class="table">
+      <thead>
+      <th>type</th>
+      <th>value</th>
+      <th>category</th>
+      <th>subcategory</th>
+      <th>date</th>
+      </thead>
+      <tbody>
       <Transaction
         v-for="obj in filteredTransactions" :data="obj"
         :key="obj.id"
       />
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -72,3 +83,7 @@ export default {
 };
 
 </script>
+
+<style>
+
+</style>

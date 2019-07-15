@@ -1,52 +1,90 @@
 <template>
-  <div class="container">
-    <DatePicker v-model="date"/>
-    <input
-      class="input"
-      placeholder="0.00"
-      max="0"
-      type="number"
-      step=".01"
-      v-model="value">
-    <div class="select">
-      <select v-model="category" v-if="type === 'expense'">
-        <option value=null>Select category</option>
-        <option
-          v-for="(category, id) in Object.keys(expensesCategories)"
-          :key="id"
-          :value="category">
-          {{ category }}
-        </option>
-      </select>
+  <div class="modal" :class="isOpen ? 'is-active' : null">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Add Transaction</p>
+        <button class="delete" aria-label="close" @click="$emit(toggleModal())"></button>
+      </header>
+      <section class="modal-card-body">
+        <div class="columns">
+          <div class="field column is-half">
+            <DatePicker :inline="true" v-model="date"/>
+          </div>
+          <div class="column is-half">
+            <div class="field">
+              <div class="control">
+                <input
+                  class="input"
+                  placeholder="0.00"
+                  max="0"
+                  type="number"
+                  step=".01"
+                  v-model="value">
+              </div>
+            </div>
+            <div class="field" v-if="type === 'expense'">
+              <div class="control">
+                <div class="select">
+                  <select v-model="category" >
+                    <option value=null>Select category</option>
+                    <option
+                      v-for="(category, id) in Object.keys(expensesCategories)"
+                      :key="id"
+                      :value="category">
+                      {{ category }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="field" v-if="type === 'expense'">
+              <div class="control">
+                <div class="select" >
+                  <select v-model="subcategory">
+                    <option value=null>Select subcategory</option>
+                    <option v-for="(subcategory, id) in this.expensesCategories[this.category]"
+                            :key="id"
+                            :value="subcategory"
+                    >{{subcategory}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="field" v-else>
+              <div class="control">
+                <div class="select">
+                  <select v-model="category" >
+                    <option value=null>Select category</option>
+                    <option
+                      v-for="(category, id) in incomesCategories"
+                      :key="id"
+                      :value="category">
+                      {{ category }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="Description" v-model="description">
+              </div>
+            </div>
+            <button
+              class="button"
+              @click="submit()" :disabled='!date || !value || !category'>Add</button>
+          </div>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button" @click="$emit(toggleModal())">Cancel</button>
+      </footer>
     </div>
-    <div class="select" v-if="type === 'expense'">
-      <select v-model="subcategory">
-        <option value=null>Select subcategory</option>
-        <option v-for="(subcategory, id) in this.expensesCategories[this.category]"
-                :key="id"
-                :value="subcategory"
-        >{{subcategory}}
-        </option>
-      </select>
-    </div>
-    <div class="select" v-else>
-      <select v-model="category" >
-        <option value=null>Select category</option>
-        <option
-          v-for="(category, id) in incomesCategories"
-          :key="id"
-          :value="category">
-          {{ category }}
-        </option>
-      </select>
-    </div>
-    <input
-      class="input"
-      type="text"
-      placeholder="Description" v-model="description">
-    <button
-      class="button"
-      @click="submit()" :disabled='!date || !value || !category'>Add</button>
   </div>
 </template>
 
@@ -58,7 +96,7 @@ export default {
   components: {
     DatePicker,
   },
-  props: ['type'],
+  props: ['type', 'toggleModal', 'isOpen'],
   data() {
     return {
       date: null,
@@ -121,5 +159,10 @@ export default {
 </script>
 
 <style>
-
+  .select {
+    width: 100%;
+  }
+  select {
+    width: 100%;
+  }
 </style>
