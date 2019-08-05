@@ -1,29 +1,34 @@
 <template>
-  <div  class="section">
-    <div class="field is-grouped buttons" >
-      <button
-        class="button"
-        @click="filter = null">All</button>
-      <button
-        class="button"
-        @click="filter = 'income'">Incomes</button>
-      <button
-        class="button"
-        @click="filter = 'expense'">Expenses</button>
-      <div
-        class="button"
-        @click="filter = 'date'">Date from</div>
-      <div class="datepicker_container" v-if="filter === 'date'">
-        <DatePicker v-model="dateFrom"/>
+  <div  class="">
+    <div class="is-pulled-left panel no-border">
+      <div class="panel-tabs no-border">
+        <a
+          class="control no-border"
+          :class="filter === null ? 'active' : null"
+          @click="filter = null">All</a>
+        <a
+          class="control no-border"
+          :class="filter === 'income' ? 'active' : null"
+          @click="filter = 'income'">Incomes</a>
+        <a
+          class="control no-border"
+          :class="filter === 'expense' ? 'active' : null"
+          @click="filter = 'expense'">Expenses</a>
+        <a
+          class="control no-border"
+          :class="filter === 'date' ? 'active' : null"
+          @click="filter = 'date'">Date</a>
+        <a class="control no-border" v-if="filter === 'date'" >
+          <DatePicker placeholder="Date from" v-model="dateFrom"/>
+        </a>
       </div>
     </div>
-    <table class="table">
+    <table class="table container is-fullwidth">
       <thead>
-      <th>type</th>
-      <th>value</th>
+      <th>date</th>
       <th>category</th>
       <th>subcategory</th>
-      <th>date</th>
+      <th>value</th>
       </thead>
       <tbody>
       <Transaction
@@ -32,6 +37,10 @@
       />
       </tbody>
     </table>
+    <Pagination
+      :total="pagination.total"
+      :current="pagination.current"
+      :onPageChange="onPageChange"/>
   </div>
 </template>
 
@@ -40,10 +49,11 @@
 import { mapGetters } from 'vuex';
 import DatePicker from 'vuejs-datepicker';
 import Transaction from './Transaction.vue';
+import Pagination from './Pagination.vue';
 
 
 export default {
-  components: { Transaction, DatePicker },
+  components: { Transaction, DatePicker, Pagination },
   data() {
     return {
       dateFrom: null,
@@ -51,6 +61,11 @@ export default {
       filterByDate: false,
       filterByType: false,
       filterByCategory: false,
+      pagination: {
+        current: 1,
+        total: null,
+        itemPerPage: 6,
+      },
     };
   },
   computed: {
@@ -70,7 +85,10 @@ export default {
       } else {
         transactions = this.incomes.concat(this.expenses);
       }
-      return transactions.sort(this.sortFunction);
+      this.pagination.total = Math.ceil(transactions.length / this.pagination.itemPerPage);
+      const sorted = transactions.sort(this.sortFunction);
+      const paginated = this.paginate(sorted, this.pagination.itemPerPage, this.pagination.current);
+      return paginated;
     },
   },
   methods: {
@@ -79,11 +97,26 @@ export default {
       const dateB = new Date(b.date).getTime();
       return dateA > dateB ? 1 : -1;
     },
+    paginate(array, pageSize, pageNumber) {
+      // eslint-disable-next-line
+      --pageNumber; // because pages logically start with 1, but technically with 0
+      return array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
+    },
+    onPageChange(page) {
+      if (page > 0 && page <= this.pagination.total) {
+        this.pagination.current = page;
+      }
+    },
   },
 };
 
 </script>
 
-<style>
-
+<style lang="scss">
+  .active {
+    font-weight: bold;
+  }
+  .no-border {
+    border: none !important;
+  }
 </style>

@@ -1,15 +1,15 @@
 <template>
-  <div class='container'>
+  <div class='container '>
     <DisplayTransactions/>
     <div>user balance: {{this.userBalance}}</div>
     <div class="section">
       <div class='typeSelection' v-if='openModal === false'>
         <button
           class='button'
-          :disabled='this.addExpense' @click='toggleExpense'>Add Expense</button>
+          @click='toggleExpense'>Add Expense</button>
         <button
           class='button'
-          :disabled='this.addIncome' @click='toggleExpense'>Add Income</button>
+          @click='toggleExpense'>Add Income</button>
       </div>
       <AddTransaction :type='type' :toggleModal="toggleModal" :isOpen="openModal"/>
     </div>

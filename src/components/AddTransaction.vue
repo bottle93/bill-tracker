@@ -3,7 +3,7 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">Add Transaction</p>
+        <p class="modal-card-title">Add {{type}}</p>
         <button class="delete" aria-label="close" @click="$emit(toggleModal())"></button>
       </header>
       <section class="modal-card-body">
@@ -147,11 +147,13 @@ export default {
         this.addIncome(data);
         this.calcUserBalance();
         this.clearData();
+        this.$emit(this.toggleModal());
       } else {
         const data = this.getExpenseData();
         this.addExpense(data);
         this.calcUserBalance();
         this.clearData();
+        this.$emit(this.toggleModal());
       }
     },
   },
