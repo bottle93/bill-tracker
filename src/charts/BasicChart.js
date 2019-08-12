@@ -1,7 +1,7 @@
-import { Pie } from 'vue-chartjs';
+import { Bar } from 'vue-chartjs';
 
 export default {
-  extends: Pie,
+  extends: Bar,
   props: ['data', 'options'],
   mounted() {
     // this.chartData is created in the mixin.

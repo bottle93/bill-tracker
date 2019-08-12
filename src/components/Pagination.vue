@@ -1,16 +1,16 @@
 <template>
   <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-    <a
+    <!--<a
       class="pagination-previous"
       @click="$emit(onPageChange(current-1))"
     >
       Previous
-    </a>
-    <a
+    </a>-->
+    <!--<a
       class="pagination-next"
       @click="$emit(onPageChange(current+1))">
       Next page
-    </a>
+    </a>-->
     <ul class="pagination-list">
       <li v-for="i in total" :key="i">
         <a

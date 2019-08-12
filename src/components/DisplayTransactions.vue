@@ -1,5 +1,19 @@
 <template>
   <div  class="">
+    <table class="table container is-fullwidth">
+      <thead>
+      <th>date</th>
+      <th>category</th>
+      <th>subcategory</th>
+      <th>value</th>
+      </thead>
+      <tbody>
+      <Transaction
+        v-for="obj in filteredTransactions" :data="obj"
+        :key="obj.id"
+      />
+      </tbody>
+    </table>
     <div class="is-pulled-left panel no-border">
       <div class="panel-tabs no-border">
         <a
@@ -23,21 +37,8 @@
         </a>
       </div>
     </div>
-    <table class="table container is-fullwidth">
-      <thead>
-      <th>date</th>
-      <th>category</th>
-      <th>subcategory</th>
-      <th>value</th>
-      </thead>
-      <tbody>
-      <Transaction
-        v-for="obj in filteredTransactions" :data="obj"
-        :key="obj.id"
-      />
-      </tbody>
-    </table>
     <Pagination
+      class="is-right"
       :total="pagination.total"
       :current="pagination.current"
       :onPageChange="onPageChange"/>

@@ -45,6 +45,11 @@ export default new Vuex.Store({
       const expenseSummary = this.state.expenses.reduce((prev, cur) => prev + Number(cur.value), 0);
       this.state.userBalance = (incomesSummary - expenseSummary);
     },
+    sortByDate(a, b) {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      return dateA > dateB ? 1 : -1;
+    },
   },
   actions: {
     addExpense(context, data) {
@@ -55,6 +60,9 @@ export default new Vuex.Store({
     },
     calcUserBalance(context) {
       context.commit('calcUserBalance');
+    },
+    sortByDate(context, a, b) {
+      context.commit('sortByDate', a, b);
     },
   },
   plugins: [vuexLocalStorage.plugin],
